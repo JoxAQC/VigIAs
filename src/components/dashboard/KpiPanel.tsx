@@ -6,6 +6,7 @@ import {
 } from "@/components/ui/card";
 import { Siren, Flame, Shield, Video, CheckCircle } from "lucide-react";
 import { ALERTAS_SIMULADAS, PUNTOS_CALIENTES_SIMULADOS, RECURSOS_SIMULADOS } from "@/lib/mockData";
+import { cn } from "@/lib/utils";
 
 export function KpiPanel() {
   const criticalAlertsToday = ALERTAS_SIMULADAS.filter(
@@ -21,43 +22,48 @@ export function KpiPanel() {
       value: criticalAlertsToday,
       icon: <Siren className="h-6 w-6 text-destructive" />,
       color: "text-destructive",
+      borderColor: "border-destructive",
     },
     {
       title: "Puntos Calientes Activos",
       value: activeHotspots,
-      icon: <Flame className="h-6 w-6 text-amber-500" />,
-      color: "text-amber-500",
+      icon: <Flame className="h-6 w-6 text-chart-4" />,
+      color: "text-chart-4",
+      borderColor: "border-chart-4",
     },
     {
       title: "Recursos de Serenazgo",
       value: `${RECURSOS_SIMULADOS.serenazgo.disponibles}/${RECURSOS_SIMULADOS.serenazgo.total}`,
       icon: <Shield className="h-6 w-6 text-blue-500" />,
       color: "text-blue-500",
+      borderColor: "border-blue-500",
     },
     {
       title: "Cámaras Operativas",
       value: `${RECURSOS_SIMULADOS.camaras.operativas}/${RECURSOS_SIMULADOS.camaras.total}`,
-      icon: <Video className="h-6 w-6 text-green-500" />,
-      color: "text-green-500",
+      icon: <Video className="h-6 w-6 text-chart-1" />,
+      color: "text-chart-1",
+      borderColor: "border-chart-1",
     },
     {
         title: "Alertas Gestionadas",
         value: managedAlerts,
         icon: <CheckCircle className="h-6 w-6 text-primary" />,
         color: "text-primary",
+        borderColor: "border-primary",
       },
   ];
 
   return (
     <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-5">
       {kpis.map((kpi) => (
-        <Card key={kpi.title} className="shadow-sm hover:shadow-md transition-shadow">
+        <Card key={kpi.title} className={cn("shadow-sm hover:shadow-md transition-shadow border-l-4", kpi.borderColor)}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">{kpi.title}</CardTitle>
             {kpi.icon}
           </CardHeader>
           <CardContent>
-            <div className={`text-2xl font-bold ${kpi.color}`}>{kpi.value}</div>
+            <div className={cn("text-2xl font-bold", kpi.color)}>{kpi.value}</div>
           </CardContent>
         </Card>
       ))}
