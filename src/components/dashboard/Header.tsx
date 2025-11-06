@@ -32,24 +32,6 @@ export function Header() {
         </Sheet>
       </div>
       <h1 className="text-xl font-semibold hidden sm:block text-zinc-600">Dashboard</h1>
-      <div className="ml-auto flex items-center gap-4">
-        <span className="hidden sm:inline text-zinc-600">{user?.name}</span>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="icon" className="overflow-hidden rounded-full">
-              <User className="h-5 w-5 text-zinc-600" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>{user?.name}</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={logout}>
-              <LogOut className="mr-2 h-4 w-4" />
-              Cerrar Sesión
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
     </header>
   );
 }

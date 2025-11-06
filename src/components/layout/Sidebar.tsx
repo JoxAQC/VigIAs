@@ -34,10 +34,10 @@ export function Sidebar() {
   const navItems = [
     { href: "/", icon: Home, label: "Dashboard" },
     { href: "#", icon: Settings, label: "Configuración", disabled: true },
-    { href: "/login", icon: LogOut, label: "Cerrar Sesión", action: logout },
   ];
 
   const navContent = (
+    <>
     <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
       <Link
         href="#"
@@ -68,6 +68,24 @@ export function Sidebar() {
         </TooltipProvider>
       ))}
     </nav>
+      <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon" className="overflow-hidden rounded-full h-9 w-9 text-muted-foreground hover:text-foreground">
+              <User className="h-5 w-5" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent side="right" align="end">
+            <DropdownMenuLabel>{user?.name}</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={logout}>
+              <LogOut className="mr-2 h-4 w-4" />
+              Cerrar Sesión
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </nav>
+    </>
   );
   
   const mobileNavContent = (
@@ -89,6 +107,14 @@ export function Sidebar() {
           {item.label}
         </Link>
       ))}
+       <Link
+          href={'/login'}
+          onClick={logout}
+          className={'flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground'}
+        >
+          <LogOut className="h-5 w-5" />
+          Cerrar Sesión
+        </Link>
     </nav>
   );
 
@@ -113,23 +139,6 @@ export function Sidebar() {
            {mobileNavContent}
           </SheetContent>
         </Sheet>
-        <div className="ml-auto">
-          <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="icon" className="overflow-hidden rounded-full">
-                  <User className="size-5"/>
-                </Button>
-              </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>{user?.name}</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={logout}>
-                <LogOut className="mr-2 h-4 w-4" />
-                Cerrar Sesión
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
       </header>
     </>
   );

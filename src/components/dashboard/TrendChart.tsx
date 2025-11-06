@@ -45,24 +45,24 @@ ALERTAS_SIMULADAS.forEach(alert => {
 const chartConfig = {
   alta: {
     label: "Alta",
-    color: "hsl(var(--destructive))",
+    color: "#c9096b",
   },
   media: {
     label: "Media",
-    color: "hsl(var(--chart-4))",
+    color: "#f1a12c",
   },
   baja: {
     label: "Baja",
-    color: "hsl(var(--chart-1))",
+    color: "#92b922",
   },
 } satisfies ChartConfig
 
 export function TrendChart() {
   return (
     <Card className="shadow-lg">
-      <CardHeader>
+      <CardHeader className="bg-[#37a6ba] text-primary-foreground rounded-t-lg">
         <CardTitle>Tendencia de Alertas (Últimas 24h)</CardTitle>
-        <CardDescription>Volumen de alertas por prioridad a lo largo del día.</CardDescription>
+        <CardDescription className="text-primary-foreground/90">Volumen de alertas por prioridad a lo largo del día.</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-[200px] w-full">
@@ -81,6 +81,7 @@ export function TrendChart() {
               axisLine={false}
               tickMargin={8}
               tickFormatter={(value, index) => index % 4 === 0 ? value : ""}
+              className="fill-muted-foreground"
             />
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <defs>

@@ -67,9 +67,9 @@ export function AlertsTable() {
   return (
     <>
       <Card className="shadow-lg">
-        <CardHeader>
+        <CardHeader className="bg-[#37a6ba] text-primary-foreground rounded-t-lg">
           <CardTitle>Registro de Alertas</CardTitle>
-          <CardDescription>
+          <CardDescription className="text-primary-foreground/90">
             Listado de alertas de seguridad recibidas. Ordenado por prioridad.
           </CardDescription>
         </CardHeader>
@@ -82,7 +82,6 @@ export function AlertsTable() {
                   <TableHead>Prioridad</TableHead>
                   <TableHead>Clasificación</TableHead>
                   <TableHead>Estado</TableHead>
-                  <TableHead className="text-center hidden md:table-cell">Análisis</TableHead>
                   <TableHead className="text-right">Acciones</TableHead>
                 </TableRow>
               </TableHeader>
@@ -97,16 +96,14 @@ export function AlertsTable() {
                     <TableCell>
                       <Badge variant="outline">{alert.estado.replace("_", " ")}</Badge>
                     </TableCell>
-                    <TableCell className="text-center hidden md:table-cell">
-                      <Button
-                        variant="ghost"
+                    <TableCell className="text-right space-x-2">
+                       <Button
+                        variant="outline"
                         size="sm"
                         onClick={() => handleViewDetails(alert)}
                       >
-                        <Eye className="mr-2 h-4 w-4" /> Ver detalles
+                        <Eye className="h-4 w-4" />
                       </Button>
-                    </TableCell>
-                    <TableCell className="text-right">
                       <Button
                         variant="outline"
                         size="sm"

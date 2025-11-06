@@ -35,9 +35,9 @@ export function InteractiveMap() {
 
   return (
     <Card className="shadow-lg h-[450px] md:h-full">
-      <CardHeader>
+      <CardHeader className="bg-[#37a6ba] text-primary-foreground rounded-t-lg">
         <CardTitle>Mapa de Incidencia en Tiempo Real</CardTitle>
-        <CardDescription>Alertas recientes y puntos calientes en SJL.</CardDescription>
+        <CardDescription className="text-primary-foreground/90">Alertas recientes y puntos calientes en SJL.</CardDescription>
       </CardHeader>
       <CardContent className="h-full pb-12">
         <div className="relative w-full h-full rounded-lg overflow-hidden border">

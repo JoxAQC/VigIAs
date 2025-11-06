@@ -38,9 +38,9 @@ const chartConfig = {
 export function IncidentChart() {
   return (
     <Card className="shadow-lg">
-      <CardHeader>
+      <CardHeader className="bg-[#37a6ba] text-primary-foreground rounded-t-lg">
         <CardTitle>Clasificación de Incidentes</CardTitle>
-        <CardDescription>Distribución de alertas por tipo de incidente.</CardDescription>
+        <CardDescription className="text-primary-foreground/90">Distribución de alertas por tipo de incidente.</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-[200px] w-full">
@@ -53,13 +53,14 @@ export function IncidentChart() {
               tickMargin={10}
               axisLine={false}
               tickFormatter={(value) => value.slice(0, 3)}
+              className="fill-muted-foreground"
             />
             <XAxis dataKey="count" type="number" hide />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent indicator="line" />}
             />
-            <Bar dataKey="count" fill="var(--color-count)" radius={4} />
+            <Bar dataKey="count" fill="hsl(var(--primary))" radius={4} />
           </BarChart>
         </ChartContainer>
       </CardContent>
