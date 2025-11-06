@@ -1,22 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import {
-  Home,
-  Settings,
-  PanelLeft,
-  User,
-  LogOut,
-  ShieldAlert,
-} from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Home, Settings, LogOut, ShieldAlert, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useAuth } from "@/hooks/use-auth";
 import { Logo } from "../icons/Logo";
 import {
@@ -36,47 +22,45 @@ export function Sidebar() {
     { href: "#", icon: Settings, label: "Configuración", disabled: true },
   ];
 
-  const navContent = (
-    <>
-    <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
-      <Link
-        href="#"
-        className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
-      >
-        <ShieldAlert className="h-4 w-4 transition-all group-hover:scale-110" />
-        <span className="sr-only">SJL Alerta</span>
-      </Link>
-      {navItems.map((item) => (
-        <TooltipProvider key={item.label}>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                href={item.href}
-                onClick={item.action}
-                className={`flex h-9 w-9 items-center justify-center rounded-lg ${
-                  item.disabled
-                    ? "text-muted-foreground cursor-not-allowed"
-                    : "text-muted-foreground transition-colors hover:text-foreground"
-                } md:h-8 md:w-8`}
-              >
-                <item.icon className="h-5 w-5" />
-                <span className="sr-only">{item.label}</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">{item.label}</TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      ))}
-    </nav>
-      <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
+  return (
+    <aside className="fixed inset-y-0 left-0 z-10 hidden w-64 flex-col border-r bg-[#303941] text-white sm:flex">
+      <div className="flex h-16 shrink-0 items-center border-b border-gray-500/50 px-6">
+        <Link href="/" className="flex items-center gap-2 font-semibold">
+          <ShieldAlert className="h-6 w-6" />
+          <span>SJL Alerta</span>
+        </Link>
+      </div>
+      <nav className="flex-1 overflow-auto py-4">
+        <div className="grid items-start px-4 text-sm font-medium">
+          {navItems.map((item) => (
+            <Link
+              key={item.label}
+              href={item.href}
+              className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${
+                item.disabled
+                  ? "text-gray-400 cursor-not-allowed"
+                  : "hover:bg-white/10 hover:text-white"
+              }`}
+            >
+              <item.icon className="h-4 w-4" />
+              {item.label}
+            </Link>
+          ))}
+        </div>
+      </nav>
+      <div className="mt-auto border-t border-gray-500/50 p-4">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="overflow-hidden rounded-full h-9 w-9 text-muted-foreground hover:text-foreground">
-              <User className="h-5 w-5" />
+            <Button variant="ghost" className="flex w-full items-center justify-start gap-2 p-2 text-left hover:bg-white/10">
+                <User className="h-8 w-8 rounded-full bg-gray-600 p-1" />
+                <div className="flex flex-col">
+                  <span className="text-sm font-medium">{user?.name}</span>
+                  <span className="text-xs text-gray-400">{user?.email}</span>
+                </div>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent side="right" align="end">
-            <DropdownMenuLabel>{user?.name}</DropdownMenuLabel>
+            <DropdownMenuLabel>Mi Cuenta</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={logout}>
               <LogOut className="mr-2 h-4 w-4" />
@@ -84,62 +68,7 @@ export function Sidebar() {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      </nav>
-    </>
-  );
-  
-  const mobileNavContent = (
-    <nav className="grid gap-6 text-lg font-medium">
-      <Link
-        href="#"
-        className="group flex items-center gap-2 text-lg font-semibold"
-      >
-        <Logo />
-      </Link>
-      {navItems.map((item) => (
-         <Link
-          key={item.label}
-          href={item.href}
-          onClick={item.action}
-          className={`flex items-center gap-4 px-2.5 ${item.disabled ? 'text-muted-foreground hover:text-muted-foreground cursor-not-allowed' : 'text-muted-foreground hover:text-foreground'}`}
-        >
-          <item.icon className="h-5 w-5" />
-          {item.label}
-        </Link>
-      ))}
-       <Link
-          href={'/login'}
-          onClick={logout}
-          className={'flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground'}
-        >
-          <LogOut className="h-5 w-5" />
-          Cerrar Sesión
-        </Link>
-    </nav>
-  );
-
-
-  return (
-    <>
-      {/* Desktop Sidebar */}
-      <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex bg-[#303941] text-white">
-        {navContent}
-      </aside>
-      
-      {/* Mobile Header */}
-      <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:hidden sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button size="icon" variant="outline" className="sm:hidden">
-              <PanelLeft className="h-5 w-5" />
-              <span className="sr-only">Toggle Menu</span>
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left" className="sm:max-w-xs">
-           {mobileNavContent}
-          </SheetContent>
-        </Sheet>
-      </header>
-    </>
+      </div>
+    </aside>
   );
 }
