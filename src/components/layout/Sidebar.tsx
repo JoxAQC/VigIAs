@@ -7,6 +7,7 @@ import {
   PanelLeft,
   User,
   LogOut,
+  ShieldAlert,
 } from "lucide-react";
 import {
   Tooltip,
@@ -33,67 +34,70 @@ export function Sidebar() {
   const navItems = [
     { href: "/", icon: Home, label: "Dashboard" },
     { href: "#", icon: Settings, label: "Configuración", disabled: true },
+    { href: "/login", icon: LogOut, label: "Cerrar Sesión", action: logout },
   ];
-  
+
   const navContent = (
-    <>
-      <nav className="grid gap-1 p-2">
-        {navItems.map((item) => (
-          <Tooltip key={item.label}>
+    <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
+      <Link
+        href="#"
+        className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
+      >
+        <ShieldAlert className="h-4 w-4 transition-all group-hover:scale-110" />
+        <span className="sr-only">SJL Alerta</span>
+      </Link>
+      {navItems.map((item) => (
+        <TooltipProvider key={item.label}>
+          <Tooltip>
             <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="rounded-lg"
-                aria-label={item.label}
-                asChild
-                disabled={item.disabled}
+              <Link
+                href={item.href}
+                onClick={item.action}
+                className={`flex h-9 w-9 items-center justify-center rounded-lg ${
+                  item.disabled
+                    ? "text-muted-foreground cursor-not-allowed"
+                    : "text-muted-foreground transition-colors hover:text-foreground"
+                } md:h-8 md:w-8`}
               >
-                <Link href={item.href}>
-                  <item.icon className="size-5" />
-                </Link>
-              </Button>
+                <item.icon className="h-5 w-5" />
+                <span className="sr-only">{item.label}</span>
+              </Link>
             </TooltipTrigger>
-            <TooltipContent side="right" sideOffset={5}>
-              {item.label}
-            </TooltipContent>
+            <TooltipContent side="right">{item.label}</TooltipContent>
           </Tooltip>
-        ))}
-      </nav>
-      <div className="mt-auto grid gap-1 p-2">
-         <DropdownMenu>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="mt-auto rounded-lg" aria-label="Account">
-                    <User className="size-5" />
-                  </Button>
-                </DropdownMenuTrigger>
-              </TooltipTrigger>
-              <TooltipContent side="right" sideOffset={5}>
-                Cuenta
-              </TooltipContent>
-            </Tooltip>
-            <DropdownMenuContent side="right">
-              <DropdownMenuLabel>{user?.name}</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={logout}>
-                <LogOut className="mr-2 h-4 w-4" />
-                Cerrar Sesión
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-      </div>
-    </>
+        </TooltipProvider>
+      ))}
+    </nav>
   );
+  
+  const mobileNavContent = (
+    <nav className="grid gap-6 text-lg font-medium">
+      <Link
+        href="#"
+        className="group flex items-center gap-2 text-lg font-semibold"
+      >
+        <Logo />
+      </Link>
+      {navItems.map((item) => (
+         <Link
+          key={item.label}
+          href={item.href}
+          onClick={item.action}
+          className={`flex items-center gap-4 px-2.5 ${item.disabled ? 'text-muted-foreground hover:text-muted-foreground cursor-not-allowed' : 'text-muted-foreground hover:text-foreground'}`}
+        >
+          <item.icon className="h-5 w-5" />
+          {item.label}
+        </Link>
+      ))}
+    </nav>
+  );
+
 
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
-        <TooltipProvider>
-         {navContent}
-        </TooltipProvider>
+      <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex bg-[#303941] text-white">
+        {navContent}
       </aside>
       
       {/* Mobile Header */}
@@ -106,21 +110,7 @@ export function Sidebar() {
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="sm:max-w-xs">
-            <nav className="grid gap-6 text-lg font-medium">
-              <div className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base">
-                 <Logo />
-              </div>
-              {navItems.map((item) => (
-                 <Link
-                  key={item.label}
-                  href={item.href}
-                  className={`flex items-center gap-4 px-2.5 ${item.disabled ? 'text-muted-foreground hover:text-muted-foreground cursor-not-allowed' : 'text-muted-foreground hover:text-foreground'}`}
-                >
-                  <item.icon className="h-5 w-5" />
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
+           {mobileNavContent}
           </SheetContent>
         </Sheet>
         <div className="ml-auto">

@@ -9,7 +9,7 @@ export function PriorityBadge({ priority }: { priority: Alert["prioridad"] }) {
     case "MEDIA":
       return <Badge className="bg-[hsl(var(--chart-4))] text-primary-foreground hover:bg-[hsl(var(--chart-4))]">MEDIA</Badge>;
     case "BAJA":
-      return <Badge variant="secondary">BAJA</Badge>;
+      return <Badge className="bg-[hsl(var(--chart-1))] text-primary-foreground hover:bg-[hsl(var(--chart-1))]">BAJA</Badge>;
     default:
       return <Badge variant="outline">{priority}</Badge>;
   }

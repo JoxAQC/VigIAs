@@ -7,7 +7,7 @@ import { AlertsTable } from "@/components/dashboard/AlertsTable";
 
 export default function Dashboard() {
   return (
-    <div className="flex min-h-screen w-full flex-col bg-muted/20 dark:bg-muted/50">
+    <div className="flex min-h-screen w-full flex-col bg-muted/40">
       <Sidebar />
       <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
         <Header />
