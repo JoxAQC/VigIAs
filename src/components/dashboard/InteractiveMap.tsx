@@ -10,6 +10,7 @@ import { Flame, Siren } from "lucide-react";
 import { Badge } from "../ui/badge";
 import { PriorityBadge } from "./PriorityBadge";
 import type { Alert } from "@/lib/types";
+import { cn } from "@/lib/utils";
 
 // Bounding box for the map image
 const MAP_BOUNDS = {
@@ -25,19 +26,33 @@ const getPositionOnMap = (lat: number, lng: number) => {
   return { top: `${top}%`, left: `${left}%` };
 };
 
+const getSirenColor = (priority: Alert['prioridad']) => {
+    switch (priority) {
+        case 'ALTA':
+            return 'text-[#c9096b]';
+        case 'MEDIA':
+            return 'text-[#f1a12c]';
+        case 'BAJA':
+            return 'text-[#92b922]';
+        default:
+            return 'text-primary';
+    }
+}
+
 export function InteractiveMap() {
   const mapImage = PlaceHolderImages.find((img) => img.id === "sjl-map");
   if (!mapImage) return null;
 
-  const recentAlerts = ALERTAS_SIMULADAS.filter(
-    (a) => new Date(a.timestamp) > new Date(Date.now() - 1 * 60 * 60 * 1000)
-  ).slice(0, 15); // Show last hour alerts, max 15
+  // Show all alerts that are not closed
+  const activeAlerts = ALERTAS_SIMULADAS.filter(
+    (a) => a.estado !== 'CERRADO' && a.estado !== 'ATENDIDO'
+  );
 
   return (
     <Card className="shadow-lg h-[450px] md:h-full">
       <CardHeader className="bg-[#37a6ba] text-primary-foreground rounded-t-lg">
         <CardTitle>Mapa de Incidencia en Tiempo Real</CardTitle>
-        <CardDescription className="text-primary-foreground/90">Alertas recientes y puntos calientes en SJL.</CardDescription>
+        <CardDescription className="text-primary-foreground/90">Alertas activas y puntos calientes en SJL.</CardDescription>
       </CardHeader>
       <CardContent className="h-full pb-12">
         <div className="relative w-full h-full rounded-lg overflow-hidden border">
@@ -80,7 +95,7 @@ export function InteractiveMap() {
               </Popover>
             );
           })}
-          {recentAlerts.map((alert) => {
+          {activeAlerts.map((alert) => {
             const pos = getPositionOnMap(alert.ubicacion.lat, alert.ubicacion.lng);
             return (
               <Popover key={alert.id}>
@@ -90,7 +105,7 @@ export function InteractiveMap() {
                   className="absolute -translate-x-1/2 -translate-y-1/2"
                 >
                    <button>
-                      <Siren className="h-5 w-5 text-primary-foreground fill-primary drop-shadow-md" />
+                      <Siren className={cn("h-5 w-5 drop-shadow-md", getSirenColor(alert.prioridad))} />
                   </button>
                 </PopoverTrigger>
                 <PopoverContent className="w-80">

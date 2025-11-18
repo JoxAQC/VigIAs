@@ -17,7 +17,7 @@ const getRandomCoordinates = () => {
 const alertTypes: Alert['tipo'][] = ['PANICO_1TOQUE', 'VEHICULO_SOSPECHOSO', 'ACTIVIDAD_SOSPECHOSA', 'ACCIDENTE', 'INCENDIO'];
 const classifications: Alert['clasificacion'][] = ['Robo a Casa', 'Conflicto en la Vía Pública', 'Accidente de Tránsito', 'Vandalismo', 'Violencia de Género', 'Otro'];
 const priorities: Alert['prioridad'][] = ['ALTA', 'MEDIA', 'BAJA'];
-const statuses: Alert['estado'][] = ['VALIDADO_CRITICO', 'EN_PROGRESO', 'ATENDIDO', 'CERRADO'];
+const statuses: Alert['estado'][] = ['RECIBIDO', 'EN_PROGRESO', 'ATENDIDO', 'CERRADO'];
 
 const generateMockDescription = (tipo: Alert['tipo'], clasificacion: Alert['clasificacion']) => {
     const original = `Reporte de ${clasificacion.toLowerCase()} a través de alerta tipo ${tipo.toLowerCase()}. Se solicita asistencia inmediata.`;
@@ -29,27 +29,36 @@ export const ALERTAS_SIMULADAS: Alert[] = Array.from({ length: 50 }, (_, i) => {
   const tipo = alertTypes[Math.floor(Math.random() * alertTypes.length)];
   const clasificacion = classifications[Math.floor(Math.random() * classifications.length)];
   const descriptions = generateMockDescription(tipo, clasificacion);
+  const prioridad = priorities[Math.floor(Math.random() * priorities.length)];
+  let estado: Alert['estado'] = statuses[Math.floor(Math.random() * statuses.length)];
+
+  // High priority alerts are more likely to be new
+  if (prioridad === 'ALTA' && Math.random() > 0.5) {
+      estado = 'RECIBIDO';
+  }
+
   return {
     id: `A${(i + 1).toString().padStart(3, '0')}`,
     tipo,
     ubicacion: getRandomCoordinates(),
     clasificacion,
-    prioridad: priorities[Math.floor(Math.random() * priorities.length)],
+    prioridad,
     timestamp: new Date(Date.now() - Math.random() * 72 * 60 * 60 * 1000).toISOString(),
-    estado: statuses[Math.floor(Math.random() * statuses.length)],
+    estado,
     descripcion_original: descriptions.original,
     descripcion_gemini: descriptions.gemini,
   };
 });
 
+// Ensure there's at least one critical, recent alert
 ALERTAS_SIMULADAS.unshift({
   id: 'A001',
   tipo: 'PANICO_1TOQUE',
   ubicacion: { lat: -12.0089, lng: -76.9920 },
   clasificacion: 'Robo a Casa',
   prioridad: 'ALTA',
-  timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-  estado: 'VALIDADO_CRITICO',
+  timestamp: new Date(Date.now() - 5 * 60 * 1000).toISOString(), // 5 minutes ago
+  estado: 'RECIBIDO',
   descripcion_original: "Persona en casa, escuchó ruidos extraños, presionó botón de pánico.",
   descripcion_gemini: "Se reporta un posible allanamiento o intrusión domiciliaria. La víctima activó una alerta de pánico sin poder proporcionar más detalles verbales. Se recomienda despliegue de unidad cercana y verificación visual."
 });
