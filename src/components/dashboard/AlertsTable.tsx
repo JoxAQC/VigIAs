@@ -108,7 +108,7 @@ export function AlertsTable() {
                         variant="outline"
                         size="sm"
                         onClick={() => handleManageAlert(alert.id, alert.ubicacion.lat, alert.ubicacion.lng)}
-                        disabled={alert.prioridad !== 'ALTA' && alert.estado !== "EN_PROGRESO"}
+                        disabled={alert.estado === "ATENDIDO" || alert.estado === "CERRADO"}
                       >
                         <Truck className="mr-2 h-4 w-4" />
                         Gestionar

@@ -9,7 +9,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Flame, Siren } from "lucide-react";
 import { Badge } from "../ui/badge";
 import { PriorityBadge } from "./PriorityBadge";
-import type { Alert } from "@/lib/types";
+import type { Alert, HotSpot } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 // Bounding box for the map image
@@ -36,6 +36,19 @@ const getSirenColor = (priority: Alert['prioridad']) => {
             return 'text-[#92b922]';
         default:
             return 'text-primary';
+    }
+}
+
+const getHotspotColor = (riskLevel: HotSpot['nivel_riesgo']) => {
+    switch (riskLevel) {
+        case 'CRÍTICO':
+            return 'text-[#c9096b] fill-[#c9096b]';
+        case 'ALTO':
+            return 'text-[#f1a12c] fill-[#f1a12c]';
+        case 'MODERADO':
+            return 'text-[#92b922] fill-[#92b922]';
+        default:
+            return 'text-destructive fill-destructive';
     }
 }
 
@@ -74,7 +87,7 @@ export function InteractiveMap() {
                   className="absolute -translate-x-1/2 -translate-y-1/2"
                 >
                   <button className="animate-pulse">
-                    <Flame className="h-8 w-8 text-destructive fill-destructive drop-shadow-lg" />
+                    <Flame className={cn("h-8 w-8 drop-shadow-lg", getHotspotColor(hotspot.nivel_riesgo))} />
                   </button>
                 </PopoverTrigger>
                 <PopoverContent className="w-80">
