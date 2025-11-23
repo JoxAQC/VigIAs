@@ -14,9 +14,9 @@ Este documento certifica la arquitectura de seguridad implementada en el sistema
 
 | Componente | Riesgo | Solución Técnica | Estándar / Ley |
 | :--- | :--- | :--- | :--- |
-| **Almacenamiento** | Robo de Información | **Cifrado AES-256** de datos sensibles. Si se filtra la BD, los datos son ilegibles. | [cite_start]**ISO 27001** (A.8.24 Uso de criptografía)  |
-| **Procesamiento IA** | Fuga de Privacidad | **Anonimización (Masking)** automática de PII (DNI, Teléfono) antes de salir a la nube. | [cite_start]**Ley 29733** (Principio de Proporcionalidad) [cite: 80] |
-| **Acceso** | Intrusión | **Lista Blanca** de correos institucionales estrictamente validada. | [cite_start]**ISO 27001** (A.5.15 Control de acceso) [cite: 1854] |
+| **Almacenamiento** | Robo de Información | **Cifrado AES-256** de datos sensibles. Si se filtra la BD, los datos son ilegibles. | **ISO 27001** (A.8.24 Uso de criptografía)  |
+| **Procesamiento IA** | Fuga de Privacidad | **Anonimización (Masking)** automática de PII (DNI, Teléfono) antes de salir a la nube. | **Ley 29733** (Principio de Proporcionalidad) [cite: 80] |
+| **Acceso** | Intrusión | **Lista Blanca** de correos institucionales estrictamente validada. | **ISO 27001** (A.5.15 Control de acceso) [cite: 1854] |
 | **Integridad IA** | Inyección de Prompt | **Guardrails** en el prompt del sistema para rechazar manipulación y generación de código malicioso. | **OWASP Top 10 for LLM** |
 
 ---
@@ -42,3 +42,4 @@ export function encryptData(text: string): string {
   encrypted += cipher.final('hex');
   return `${iv.toString('hex')}:${encrypted}`;
 }
+
